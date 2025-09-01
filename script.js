@@ -167,93 +167,142 @@ function createScrollToTopButton() {
  * Initialize maps for each day
  */
 function initializeMaps() {
-    const dayMaps = document.querySelectorAll('.day-map');
-    dayMaps.forEach((mapElement, index) => {
-        const dayNumber = index + 1;
-        initializeDayMap(mapElement, dayNumber);
-    });
+    // Initialize maps for all 8 days
+    for (let dayNumber = 1; dayNumber <= 8; dayNumber++) {
+        const mapElement = document.getElementById(`map-day${dayNumber}`);
+        if (mapElement) {
+            initializeDayMap(mapElement, dayNumber);
+        }
+    }
 }
 
 /**
- * Initialize map for a specific day
+ * Initialize map for a specific day with route from/to hotel
  */
 function initializeDayMap(mapElement, dayNumber) {
-    // Hotel location (always marked in red)
-    const hotelLocation = [39.8885, 4.2658]; // Mahón area
+    // Hotel location (Hotel Occidental Menorca, Punta Prima - always start/end point)
+    const hotelLocation = [39.8638, 4.2531]; // Hotel Occidental Menorca, Punta Prima
     
-    // Day-specific locations
-    const dayLocations = {
-        1: { center: [39.8885, 4.2658], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Playa Es Grau', coords: [39.9342, 4.2547], type: 'beach' },
-            { name: 'Puerto de Mahón', coords: [39.8883, 4.2659], type: 'poi' }
-        ]},
-        2: { center: [40.0003, 3.8385], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Cala Turqueta', coords: [39.9547, 3.9435], type: 'beach' },
-            { name: 'Ciutadella', coords: [40.0003, 3.8385], type: 'city' }
-        ]},
-        3: { center: [40.0842, 4.1478], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Cala Pregonda', coords: [40.0842, 4.1478], type: 'beach' },
-            { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' }
-        ]},
-        4: { center: [40.0586, 4.1378], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Playa Tirant', coords: [40.0489, 4.0689], type: 'beach' },
-            { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' }
-        ]},
-        5: { center: [39.9435, 3.9342], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Cala Macarella', coords: [39.9435, 3.9342], type: 'beach' },
-            { name: 'Son Saura', coords: [39.9245, 3.8956], type: 'beach' }
-        ]},
-        6: { center: [39.9789, 4.0978], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Cala Mitjana', coords: [39.9267, 4.0456], type: 'beach' },
-            { name: 'Monte Toro', coords: [39.9789, 4.0978], type: 'mountain' }
-        ]},
-        7: { center: [39.8885, 4.2658], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Cala Presili', coords: [39.8756, 4.3156], type: 'beach' },
-            { name: 'Centro Mahón', coords: [39.8883, 4.2659], type: 'shopping' }
-        ]},
-        8: { center: [39.8885, 4.2658], places: [
-            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-            { name: 'Cala Mesquida', coords: [39.9678, 4.3189], type: 'beach' },
-            { name: 'Aeropuerto', coords: [39.8625, 4.2189], type: 'airport' }
-        ]}
+    // Day-specific route waypoints with optimized geography
+    const dayRoutes = {
+        1: {
+            title: "Llegada y Relajación",
+            waypoints: [
+                "Aeropuerto+Menorca+MAH",
+                "Hotel+Occidental+Menorca+Punta+Prima", 
+                "Playa+Punta+Prima+Menorca"
+            ]
+        },
+        2: {
+            title: "Sur - Calas Macarella",
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Cala+Macarella+Menorca",
+                "Cala+Macarelleta+Menorca",
+                "Hotel+Occidental+Menorca+Punta+Prima"
+            ]
+        },
+        3: {
+            title: "Norte - Cala Pregonda y Fornells", 
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Cala+Pregonda+Menorca",
+                "Fornells+Menorca",
+                "Hotel+Occidental+Menorca+Punta+Prima"
+            ]
+        },
+        4: {
+            title: "Oeste - Ciutadella",
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Ciutadella+Menorca",
+                "Cala+en+Brut+Menorca",
+                "Cala+en+Bosch+Menorca",
+                "Hotel+Occidental+Menorca+Punta+Prima"
+            ]
+        },
+        5: {
+            title: "Este - Binibeca",
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Binibeca+Vell+Menorca",
+                "Es+Calo+Blanc+Menorca",
+                "Hotel+Occidental+Menorca+Punta+Prima"
+            ]
+        },
+        6: {
+            title: "Centro - Mahón y Cova d'en Xoroi",
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Mahon+Centro+Menorca",
+                "Cala+Mesquida+Menorca", 
+                "Cova+den+Xoroi+Menorca",
+                "Hotel+Occidental+Menorca+Punta+Prima"
+            ]
+        },
+        7: {
+            title: "Norte Alternativo - Es Grau",
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Es+Grau+Menorca",
+                "Faro+de+Favaritx+Menorca",
+                "Hotel+Occidental+Menorca+Punta+Prima"
+            ]
+        },
+        8: {
+            title: "Despedida - Última playa y aeropuerto",
+            waypoints: [
+                "Hotel+Occidental+Menorca+Punta+Prima",
+                "Playa+Punta+Prima+Menorca",
+                "Aeropuerto+Menorca+MAH"
+            ]
+        }
     };
     
-    const dayData = dayLocations[dayNumber];
-    if (!dayData) return;
+    const dayRoute = dayRoutes[dayNumber];
+    if (!dayRoute) return;
     
     try {
-        const map = L.map(mapElement.id).setView(dayData.center, 12);
+        // Create Google Maps route URL
+        const origin = dayRoute.waypoints[0];
+        const destination = dayRoute.waypoints[dayRoute.waypoints.length - 1];
+        const waypoints = dayRoute.waypoints.slice(1, -1);
         
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-        
-        // Add markers for each place
-        dayData.places.forEach(place => {
-            const icon = getMarkerIcon(place.type);
-            const marker = L.marker(place.coords, { icon }).addTo(map);
-            marker.bindPopup(`<strong>${place.name}</strong><br>
-                <a href="https://maps.google.com/?q=${place.coords[0]},${place.coords[1]}" target="_blank">
-                    🗺️ Abrir en Google Maps
-                </a>`);
+        let mapsUrl = `https://www.google.com/maps/dir/${origin}`;
+        waypoints.forEach(waypoint => {
+            mapsUrl += `/${waypoint}`;
         });
+        mapsUrl += `/${destination}`;
         
-        // Fit map to show all markers
-        if (dayData.places.length > 1) {
-            const group = new L.featureGroup(map._layers);
-            map.fitBounds(group.getBounds().pad(0.1));
-        }
+        // Create embedded map view
+        mapElement.innerHTML = `
+            <div style="height: 100%; display: flex; flex-direction: column; background: #f8f9fa; border-radius: 8px; overflow: hidden;">
+                <div style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 12px; text-align: center;">
+                    <h4 style="margin: 0; font-size: 14px;">📍 ${dayRoute.title}</h4>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">🗺️</div>
+                    <div style="font-weight: 600; margin-bottom: 8px; color: #333;">Ruta del Día ${dayNumber}</div>
+                    <div style="font-size: 14px; color: #666; margin-bottom: 20px; text-align: center; line-height: 1.4;">
+                        ${dayRoute.waypoints.length} paradas<br>
+                        🏨 Desde/hacia Hotel Occidental
+                    </div>
+                    <a href="${mapsUrl}" target="_blank" 
+                       style="background: var(--primary-color); color: white; padding: 12px 24px; 
+                              border-radius: 25px; text-decoration: none; font-weight: 600; 
+                              transition: all 0.3s ease; display: inline-block;">
+                        🚗 Ver Ruta Completa
+                    </a>
+                    <div style="margin-top: 12px; font-size: 12px; color: #888;">
+                        Se abre en Google Maps con navegación
+                    </div>
+                </div>
+            </div>
+        `;
         
     } catch (error) {
         mapElement.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #666;">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #666; background: #f8f9fa; border-radius: 8px;">
                 <div style="font-size: 2rem; margin-bottom: 1rem;">🗺️</div>
                 <div style="font-weight: 500;">Mapa del Día ${dayNumber}</div>
                 <div style="font-size: 0.9rem; margin-top: 0.5rem;">
@@ -278,6 +327,7 @@ function getMarkerIcon(type) {
         mountain: '⛰️',
         shopping: '🛍️',
         airport: '✈️',
+        restaurant: '🍽️',
         poi: '📍'
     };
     
@@ -330,16 +380,19 @@ function initializeGeneralMap() {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
     
-    // Add all important locations
+    // Add all important locations from real itinerary
     const allLocations = [
-        { name: 'Hotel Base - Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
-        { name: 'Ciutadella', coords: [40.0003, 3.8385], type: 'city' },
-        { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' },
-        { name: 'Cala Turqueta', coords: [39.9547, 3.9435], type: 'beach' },
+        { name: 'Hotel Occidental Menorca', coords: [39.8638, 4.2531], type: 'hotel' },
+        { name: 'Playa de Punta Prima', coords: [39.8632, 4.2542], type: 'beach' },
         { name: 'Cala Macarella', coords: [39.9435, 3.9342], type: 'beach' },
+        { name: 'Cala Macarelleta', coords: [39.9428, 3.9351], type: 'beach' },
         { name: 'Cala Pregonda', coords: [40.0842, 4.1478], type: 'beach' },
-        { name: 'Monte Toro', coords: [39.9789, 4.0978], type: 'mountain' },
-        { name: 'Aeropuerto', coords: [39.8625, 4.2189], type: 'airport' }
+        { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' },
+        { name: 'Ciutadella', coords: [40.0003, 3.8385], type: 'city' },
+        { name: 'Binibeca Vell', coords: [39.8897, 4.2156], type: 'village' },
+        { name: 'Mahón Centro', coords: [39.8883, 4.2659], type: 'city' },
+        { name: 'Cova d\'en Xoroi', coords: [39.9234, 4.0612], type: 'poi' },
+        { name: 'Aeropuerto Menorca', coords: [39.8625, 4.2189], type: 'airport' }
     ];
     
     allLocations.forEach(location => {
