@@ -1,0 +1,294 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #2a6f5e;
+    --secondary-color: #f7b731;
+    --background-color: #eaf6f4;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --hover-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--background-color) 0%, #d4f1ed 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, var(--primary-color), #3a8572);
+    color: white;
+    padding: 40px 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Day Card Styles */
+.day-card {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    overflow: hidden;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid rgba(42, 111, 94, 0.1);
+}
+
+.day-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--hover-shadow);
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-bottom: 1px solid rgba(42, 111, 94, 0.1);
+}
+
+.day-header h2 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 600;
+    flex: 1;
+}
+
+.toggle-icon {
+    font-size: 1.5em;
+    color: var(--primary-color);
+    transition: var(--transition);
+    margin-left: 15px;
+    user-select: none;
+}
+
+.day-card.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Content Animation */
+.day-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, padding 0.3s ease;
+    background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
+}
+
+.day-card.active .day-content {
+    max-height: 1500px;
+    padding: 25px;
+}
+
+/* Activity Styles */
+.activity {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-left: 4px solid var(--secondary-color);
+    background: rgba(247, 183, 49, 0.05);
+    border-radius: 0 8px 8px 0;
+    transition: var(--transition);
+}
+
+.activity:hover {
+    background: rgba(247, 183, 49, 0.1);
+    transform: translateX(3px);
+}
+
+.activity strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.activity p {
+    margin: 5px 0 0 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Info Box Styles */
+.info-box {
+    background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+    border-left: 4px solid var(--primary-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-box p {
+    margin: 0;
+    font-style: italic;
+    color: var(--text-color);
+}
+
+.info-box strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Weather Info Styles */
+.weather-info {
+    background: linear-gradient(135deg, var(--secondary-color), #ffcd3c);
+    color: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin-top: 40px;
+    box-shadow: var(--shadow);
+}
+
+.weather-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.weather-info p {
+    font-size: 1rem;
+    opacity: 0.95;
+}
+
+/* Highlight Styles */
+.highlight {
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header {
+        padding: 30px 20px;
+    }
+    
+    .day-header {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .day-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .day-card.active .day-content {
+        padding: 20px;
+    }
+    
+    .activity {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .info-box {
+        padding: 15px;
+        margin-top: 20px;
+    }
+    
+    .weather-info {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .day-header {
+        padding: 15px;
+    }
+    
+    .day-header h2 {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .activity {
+        padding: 10px;
+    }
+    
+    .activity p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Loading Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.day-card {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.day-card:nth-child(2) { animation-delay: 0.1s; }
+.day-card:nth-child(3) { animation-delay: 0.2s; }
+.day-card:nth-child(4) { animation-delay: 0.3s; }
+.day-card:nth-child(5) { animation-delay: 0.4s; }
+.day-card:nth-child(6) { animation-delay: 0.5s; }
+.day-card:nth-child(7) { animation-delay: 0.6s; }
+.day-card:nth-child(8) { animation-delay: 0.7s; }
+.day-card:nth-child(9) { animation-delay: 0.8s; }
+
+/* Print Styles */
+@media print {
+    .day-content {
+        max-height: none !important;
+        padding: 15px !important;
+    }
+    
+    .toggle-icon {
+        display: none;
+    }
+    
+    .day-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
