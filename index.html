@@ -3,370 +3,532 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏝️ Menorca Travel Guide - Itinerario Interactivo</title>
-    <meta name="description" content="Guía completa de 8 días por Menorca con mapas interactivos, tiempo en tiempo real y el mejor UX para tu viaje">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
+    <title>🐙 Menorca Travel Guide - Itinerario Interactivo</title>
+    <meta name="description" content="Guía completa de 8 días por Menorca con mapas interactivos y el mejor UX para tu viaje">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐙</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-content">
-                <h1>🏝️ Itinerario de 8 días en Menorca</h1>
-                <p>Una ruta optimizada para que disfrutes al máximo, combinando playas, cultura y gastronomía.</p>
+            <div class="hero-content">
+                <h1>🐙 Menorca Travel Guide</h1>
+                <p>Descubre la belleza mediterránea en 8 días únicos</p>
                 
-                <!-- Weather Widget -->
-                <div class="weather-widget">
-                    <div class="weather-info">
-                        <i class="fas fa-sun weather-icon"></i>
-                        <div class="weather-details">
-                            <span class="temperature">Cargando...</span>
-                            <span class="weather-desc">Obteniendo tiempo...</span>
-                        </div>
-                        <div class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Menorca, ES</span>
-                        </div>
+                <!-- Trip Progress -->
+                <div class="trip-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
                     </div>
-                </div>
-
-                <!-- Quick Navigation -->
-                <div class="quick-nav">
-                    <button class="nav-btn" onclick="showMap()" title="Ver mapa general">
-                        <i class="fas fa-map"></i> Mapa
-                    </button>
-                    <button class="nav-btn" onclick="showWeatherForecast()" title="Previsión 7 días">
-                        <i class="fas fa-cloud-sun"></i> Tiempo
-                    </button>
-                    <button class="nav-btn" onclick="toggleOfflineMode()" title="Modo offline">
-                        <i class="fas fa-wifi"></i> Offline
-                    </button>
+                    <span id="progress-text">Progreso del viaje: 0%</span>
                 </div>
             </div>
         </header>
 
-        <!-- Map Modal -->
+        <main>
+            <!-- Día 1 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="1">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🌅 Día 1: Llegada a Mahón</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Mahon+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">☀️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Playa de Es Grau</strong> - Primera toma de contacto con las aguas menorquinas</li>
+                                    <li>🚗 Traslado relajado desde el aeropuerto</li>
+                                    <li>☕ Desayuno en <a href="https://maps.google.com/?q=Café+Central+Mahón" target="_blank">Café Central</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🏨 Check-in en <a href="https://maps.google.com/?q=Hotel+Mahón+Menorca" target="_blank">Hotel en Mahón</a></li>
+                                    <li>🦐 Almuerzo en <a href="https://maps.google.com/?q=Restaurante+Es+Molí+de+Foc+Mahón" target="_blank">Es Molí de Foc</a> - Especialidad en pescado fresco</li>
+                                    <li>📍 Paseo por el <a href="https://maps.google.com/?q=Puerto+de+Mahón" target="_blank">Puerto de Mahón</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>😴 Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>🛏️ <strong>Siesta en el hotel</strong> - Descanso después del viaje</li>
+                                    <li>🧳 Instalación y organización del equipaje</li>
+                                    <li>📱 Planificación de los próximos días</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🍷 Aperitivo en <a href="https://maps.google.com/?q=Sa+Cova+Mahón" target="_blank">Sa Cova</a> con vistas al puerto</li>
+                                    <li>🚶‍♀️ Paseo por el centro histórico de Mahón</li>
+                                    <li>🛍️ Primera visita a tiendas locales</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> Visita al <a href="https://maps.google.com/?q=Museo+de+Menorca" target="_blank">Museo de Menorca</a> y compras en el centro comercial
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 2 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="2">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🏖️ Día 2: Ciudadela y Cala Turqueta</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Ciutadella+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">🌤️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Turqueta</strong> - Una de las playas más hermosas de Menorca</li>
+                                    <li>🚗 Trayecto desde Mahón (45 min)</li>
+                                    <li>🏊‍♀️ Baño matutino en aguas cristalinas</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🥘 Almuerzo en <a href="https://maps.google.com/?q=Restaurante+Sa+Llagosta+Ciutadella" target="_blank">Sa Llagosta</a> - Ciudadela</li>
+                                    <li>🏛️ Visita a la <a href="https://maps.google.com/?q=Catedral+de+Ciutadella" target="_blank">Catedral de Ciutadella</a></li>
+                                    <li>🚶‍♀️ Paseo por el casco histórico</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>🏖️ Regreso a <strong>Cala Turqueta</strong> para más playa</li>
+                                    <li>📸 Sesión de fotos en los acantilados</li>
+                                    <li>🧘‍♀️ Relax en la naturaleza</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🍻 Aperitivo en el <a href="https://maps.google.com/?q=Puerto+de+Ciutadella" target="_blank">Puerto de Ciutadella</a></li>
+                                    <li>🌅 Atardecer desde los muelles</li>
+                                    <li>🍽️ Cena en el puerto</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> Visita al <a href="https://maps.google.com/?q=Mercado+de+Ciutadella" target="_blank">Mercado de Ciutadella</a> y museos locales
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 3 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="3">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🥾 Día 3: Camí de Cavalls Norte</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Fornells+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">⛅</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Pregonda</strong> - Playa de arena dorada única en Menorca</li>
+                                    <li>🚗 Ruta panorámica por la costa norte</li>
+                                    <li>📸 Fotografía de paisajes espectaculares</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🦞 Almuerzo en <a href="https://maps.google.com/?q=Es+Pla+Fornells" target="_blank">Es Pla</a> - Fornells (famosa caldereta de langosta)</li>
+                                    <li>🚶‍♀️ Paseo por el pueblo pesquero de <a href="https://maps.google.com/?q=Fornells+Menorca" target="_blank">Fornells</a></li>
+                                    <li>⛵ Observar los barcos en el puerto</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🥾 Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>🥾 Senderismo por una sección del <strong>Camí de Cavalls</strong></li>
+                                    <li>🏖️ Descubrimiento de calas escondidas</li>
+                                    <li>🌿 Observación de flora y fauna local</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🌅 Atardecer en <a href="https://maps.google.com/?q=Cavalleria+Faro" target="_blank">Faro de Cavalleria</a></li>
+                                    <li>🍷 Aperitivo con vistas al mar</li>
+                                    <li>🚗 Regreso al hotel</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> <a href="https://maps.google.com/?q=Bodega+Binifadet" target="_blank">Bodega Binifadet</a> - Cata de vinos y visita guiada
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 4 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="4">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🚣 Día 4: Fornells y Actividades Acuáticas</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Fornells+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">☀️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Playa de Tirant</strong> - Extensa playa de arena fina</li>
+                                    <li>🏄‍♀️ Clases de windsurf o paddle surf</li>
+                                    <li>☀️ Relajación en la playa</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🦞 Almuerzo en <a href="https://maps.google.com/?q=Restaurante+Port+de+Fornells" target="_blank">Port de Fornells</a></li>
+                                    <li>🐟 Degustación de pescado fresco local</li>
+                                    <li>🍻 Cerveza fría con vistas al puerto</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>⛵ Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>🚤 Excursión en kayak por la bahía de Fornells</li>
+                                    <li>🤿 Snorkel en aguas cristalinas</li>
+                                    <li>🏖️ Visita a calas inaccesibles por tierra</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🍹 Aperitivo en <a href="https://maps.google.com/?q=Café+Central+Fornells" target="_blank">Café Central Fornells</a></li>
+                                    <li>🌅 Atardecer desde el puerto</li>
+                                    <li>🎵 Música en vivo en los bares locales</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> <a href="https://maps.google.com/?q=Quesería+Subaida" target="_blank">Quesería Subaida</a> - Degustación de quesos artesanales
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 5 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="5">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🏖️ Día 5: Playas del Sur - Macarella</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Cala+Galdana+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">☀️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Macarella</strong> - La postal más famosa de Menorca</li>
+                                    <li>🥾 Senderismo desde Cala Galdana (30 min)</li>
+                                    <li>📸 Sesión fotográfica en aguas turquesas</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Macarelleta</strong> - La pequeña cala hermana</li>
+                                    <li>🥪 Picnic en la playa con productos locales</li>
+                                    <li>🤿 Snorkel en aguas cristalinas</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>☀️ Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Son Saura</strong> - Playa extensa y tranquila</li>
+                                    <li>🧘‍♀️ Relajación total en la arena</li>
+                                    <li>🏐 Deportes de playa opcionales</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🍽️ Cena en <a href="https://maps.google.com/?q=Restaurante+Cala+Galdana" target="_blank">Cala Galdana</a></li>
+                                    <li>🌅 Atardecer desde los miradores</li>
+                                    <li>🍦 Helado artesanal de postre</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> <a href="https://maps.google.com/?q=Lithica+Pedreres+de+s+Hostal" target="_blank">Lithica Pedreres de s'Hostal</a> - Canteras convertidas en jardines
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day5"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 6 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="6">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🏛️ Día 6: Cultura y Tradición</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Es+Mercadal+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">🌤️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Mitjana</strong> - Playa virgen entre acantilados</li>
+                                    <li>🥾 Senderismo por senderos naturales</li>
+                                    <li>🌿 Observación de la fauna local</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🏛️ Visita a <a href="https://maps.google.com/?q=Naveta+des+Tudons" target="_blank">Naveta des Tudons</a> - Monumento prehistórico</li>
+                                    <li>🍽️ Almuerzo en <a href="https://maps.google.com/?q=Es+Mercadal+centro" target="_blank">Es Mercadal</a></li>
+                                    <li>🧀 Compra de quesos artesanales locales</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🏘️ Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>🏘️ Visita al pueblo de <a href="https://maps.google.com/?q=Ferreries+Menorca" target="_blank">Ferreries</a></li>
+                                    <li>🛍️ Compras en talleres de artesanía local</li>
+                                    <li>☕ Café en plaza tradicional</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🏔️ Subida al <a href="https://maps.google.com/?q=Monte+Toro+Menorca" target="_blank">Monte Toro</a> - Punto más alto de Menorca</li>
+                                    <li>🌅 Atardecer panorámico de toda la isla</li>
+                                    <li>📸 Fotos memorables desde el mirador</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> <a href="https://maps.google.com/?q=Museo+Municipal+Ciutadella" target="_blank">Museos de Ciutadella</a> y centros de interpretación
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day6"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 7 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="7">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>🛍️ Día 7: Relax y Compras</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Mahon+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">☀️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 12:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Presili</strong> - Playa tranquila para relajarse</li>
+                                    <li>📖 Lectura y descanso en la playa</li>
+                                    <li>☀️ Último baño relajante en el mar</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🍽️ Mediodía (12:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🛍️ Compras en <a href="https://maps.google.com/?q=Mercado+Claustre+Carme+Mahón" target="_blank">Mercado del Claustre del Carme</a></li>
+                                    <li>🧀 Productos locales: quesos, sobrasada, ensaimadas</li>
+                                    <li>🍽️ Almuerzo en el mercado gastronómico</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🛍️ Tarde (15:00 - 18:00)</h3>
+                                <ul>
+                                    <li>👜 Compras de souvenirs en <a href="https://maps.google.com/?q=Ses+Voltes+Ciutadella" target="_blank">Ses Voltes</a> - Ciudadela</li>
+                                    <li>🏺 Artesanía local y productos típicos</li>
+                                    <li>☕ Descanso en cafetería con terraza</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🌅 Atardecer (18:00 - 21:00)</h3>
+                                <ul>
+                                    <li>🍷 Cena de despedida en <a href="https://maps.google.com/?q=Restaurante+Mon+Restaurant+Mahón" target="_blank">Mon Restaurant</a> - Mahón</li>
+                                    <li>🦐 Último festín de mariscos menorquines</li>
+                                    <li>🥂 Brindis por el viaje memorable</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                🌧️ <strong>Alternativa lluvia:</strong> <a href="https://maps.google.com/?q=Centro+Comercial+S+Castell" target="_blank">Centros comerciales</a> y <a href="https://maps.google.com/?q=Spa+Menorca" target="_blank">spa relajante</a>
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day7"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Día 8 -->
+            <div class="day-card" onclick="toggleContent(this)" data-day="8">
+                <div class="day-header">
+                    <div class="day-title">
+                        <h2>✈️ Día 8: Mahón y Despedida</h2>
+                        <div class="day-weather">
+                            <a href="https://weather.com/weather/today/l/Mahon+ES" target="_blank" class="weather-link">
+                                <span class="weather-temp">--°C</span>
+                                <span class="weather-icon">☀️</span>
+                            </a>
+                        </div>
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="day-content">
+                    <div class="day-layout">
+                        <div class="day-info">
+                            <div class="time-block">
+                                <h3>🌊 Mañana (9:00 - 11:00)</h3>
+                                <ul>
+                                    <li>🏖️ <strong>Cala Mesquida</strong> - Último baño en Menorca</li>
+                                    <li>📸 Fotos finales de recuerdo</li>
+                                    <li>🌅 Contemplación de la belleza natural</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>🛍️ Mediodía (11:00 - 13:00)</h3>
+                                <ul>
+                                    <li>🧳 Check-out del hotel</li>
+                                    <li>🛍️ Últimas compras en <a href="https://maps.google.com/?q=Aeropuerto+Menorca+tiendas" target="_blank">tiendas del aeropuerto</a></li>
+                                    <li>☕ Último café menorquín</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="time-block">
+                                <h3>✈️ Tarde (13:00 - 15:00)</h3>
+                                <ul>
+                                    <li>🚗 Devolución del coche de alquiler</li>
+                                    <li>✈️ Traslado al <a href="https://maps.google.com/?q=Aeropuerto+Menorca" target="_blank">Aeropuerto de Menorca</a></li>
+                                    <li>👋 ¡Hasta la vista, Menorca!</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="info-box">
+                                ⏰ <strong>Recordatorio:</strong> Llegar al aeropuerto con 2 horas de antelación para vuelos internacionales
+                            </div>
+                        </div>
+                        <div class="day-map" id="map-day8"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button para mapa general -->
+        <button class="fab" onclick="showGeneralMap()" title="Ver mapa general">
+            <span>🗺️</span>
+        </button>
+
+        <!-- Modal para mapa general -->
         <div id="mapModal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3><i class="fas fa-map"></i> Mapa del Itinerario</h3>
-                    <span class="close" onclick="closeModal('mapModal')">&times;</span>
+                    <h3>🗺️ Mapa General de Menorca</h3>
+                    <span class="close" onclick="closeModal()">&times;</span>
                 </div>
-                <div id="map" class="map-container"></div>
-                <div class="map-controls">
-                    <button onclick="showDayRoute(1)" class="day-btn active" data-day="1">Día 1</button>
-                    <button onclick="showDayRoute(2)" class="day-btn" data-day="2">Día 2</button>
-                    <button onclick="showDayRoute(3)" class="day-btn" data-day="3">Día 3</button>
-                    <button onclick="showDayRoute(4)" class="day-btn" data-day="4">Día 4</button>
-                    <button onclick="showDayRoute(5)" class="day-btn" data-day="5">Día 5</button>
-                    <button onclick="showDayRoute(6)" class="day-btn" data-day="6">Día 6</button>
-                    <button onclick="showDayRoute(7)" class="day-btn" data-day="7">Día 7</button>
-                    <button onclick="showDayRoute(8)" class="day-btn" data-day="8">Día 8</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Weather Forecast Modal -->
-        <div id="weatherModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-cloud-sun"></i> Previsión del Tiempo</h3>
-                    <span class="close" onclick="closeModal('weatherModal')">&times;</span>
-                </div>
-                <div id="weatherForecast" class="weather-forecast"></div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)" data-day="1">
-            <div class="day-header">
-                <div class="day-title">
-                    <h2>Día 1: Miércoles 3 de septiembre - Llegada y Costa Este</h2>
-                    <div class="day-weather" data-day="1">
-                        <i class="fas fa-sun"></i>
-                        <span class="day-temp">--°</span>
-                    </div>
-                </div>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="day-controls">
-                    <button class="control-btn" onclick="event.stopPropagation(); showDayMap(1)" title="Ver mapa del día">
-                        <i class="fas fa-map-marked-alt"></i> Mapa
-                    </button>
-                    <button class="control-btn" onclick="event.stopPropagation(); shareDay(1)" title="Compartir día">
-                        <i class="fas fa-share-alt"></i> Compartir
-                    </button>
-                    <button class="control-btn" onclick="event.stopPropagation(); addNotes(1)" title="Añadir notas">
-                        <i class="fas fa-sticky-note"></i> Notas
-                    </button>
-                </div>
-                
-                <div class="day-summary">
-                    <div class="summary-item">
-                        <i class="fas fa-route"></i>
-                        <span>Distancia total: ~25 km</span>
-                    </div>
-                    <div class="summary-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Tiempo estimado: 9h</span>
-                    </div>
-                    <div class="summary-item">
-                        <i class="fas fa-euro-sign"></i>
-                        <span>Presupuesto: 60-80€</span>
-                    </div>
-                </div>
-                <div class="activity">
-                    <p><strong>9:00 - 10:00 h:</strong> Llegada, recogida del coche y trayecto al Hotel Occidental Menorca (18 min). Dejar equipaje.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>10:00 - 13:00 h:</strong> Explora la <strong>Playa de Punta Prima</strong> (5 min en coche). Ideal para empezar.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:00 - 15:00 h:</strong> Almuerzo en Punta Prima. Recomendación: Chiringuito Restaurante Aire.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>15:00 - 17:00 h:</strong> 🏨 <strong>Vuelta al hotel para siesta</strong> (cansancio del viaje). Tiempo para relajarse.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>17:00 - 18:30 h:</strong> Paseo tranquilo por el pintoresco pueblo de <strong>Binibèquer Vell</strong> (10 min en coche).</p>
-                </div>
-                <div class="info-box">
-                    <strong>Alternativa:</strong> En caso de viento del sur, visita la playa de <strong>Es Grau</strong>.
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 2: Jueves 4 de septiembre - Playas del Sur y Ciutadella</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 9:45 h:</strong> Trayecto del hotel a <strong>Cala Galdana</strong> (44 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>9:45 - 13:00 h:</strong> Camina (20-25 min) hasta <strong>Cala Macarella y Macarelleta</strong>.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:00 - 14:00 h:</strong> Trayecto a <strong>Ciutadella</strong> (25 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>14:00 - 16:00 h:</strong> Almuerzo en el puerto. Recomendación: Café Balear o S'Amarador.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>16:00 - 18:00 h:</strong> Visita el centro histórico de <strong>Ciutadella</strong>.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>18:00 - 19:00 h:</strong> Trayecto de regreso al hotel (53 min).</p>
-                </div>
-                <div class="info-box">
-                    <strong>Alternativa:</strong> Con viento del norte, ve a <strong>Cala en Brut</strong> o <strong>Cala en Bosch</strong>.
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 3: Viernes 5 de septiembre - El Norte Salvaje</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 10:00 h:</strong> Trayecto a <strong>Cala Cavalleria</strong> (47 min), con 15 min de caminata.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>10:00 - 13:00 h:</strong> Disfruta de la playa de arena rojiza.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:00 - 14:00 h:</strong> Trayecto a <strong>Fornells</strong> (17 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>14:00 - 16:00 h:</strong> Almuerzo en Fornells. Recomendación: Sa Musclera.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>16:00 - 17:00 h:</strong> Paseo por el puerto de Fornells.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>17:00 - 18:00 h:</strong> Subida al <strong>Monte Toro</strong> (10 min en coche) para vistas 360º.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>18:00 - 19:00 h:</strong> Regreso al hotel (38 min).</p>
-                </div>
-                <div class="info-box">
-                    <strong>Alternativa:</strong> Si hay viento del sur, visita <strong>Cala Mitjana</strong>.
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 4: Sábado 6 de septiembre - Maó y la costa</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 9:20 h:</strong> Trayecto al puerto de <strong>Maó</strong> (21 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>9:20 - 14:00 h:</strong> Explora el puerto, el centro histórico y el Mercado del Claustre.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>14:00 - 15:30 h:</strong> Almuerzo en Maó. Recomendación: Can Vermut o Sa Botiga.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>15:30 - 16:00 h:</strong> Trayecto a la <strong>Playa de Binidalí</strong> (10 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>16:00 - 18:00 h:</strong> Disfruta de esta pequeña y tranquila cala.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>18:00 - 19:00 h:</strong> Regreso al hotel (10 min).</p>
-                </div>
-                <div class="info-box">
-                    <strong>Alternativa:</strong> Con viento del norte, prueba <strong>Cala Alcaufar</strong>.
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 5: Domingo 7 de septiembre - Calas del Oeste</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 10:00 h:</strong> Trayecto a <strong>Cala en Turqueta</strong> (1h 12 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>10:00 - 13:00 h:</strong> Disfruta de esta espectacular cala virgen.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:00 - 13:30 h:</strong> Trayecto a <strong>Cala en Bosch</strong> (15 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:30 - 15:00 h:</strong> Almuerzo en el puerto de Cala en Bosch. Recomendación: Restaurante Aquarium.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>15:00 - 17:00 h:</strong> Tarde en la playa de Cala en Bosch o <strong>Cala en Brut</strong>.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>17:00 - 18:00 h:</strong> Visita la <strong>Naveta des Tudons</strong> (20 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>18:00 - 19:00 h:</strong> Regreso al hotel (40 min).</p>
-                </div>
-                <div class="info-box">
-                    <strong>Alternativa:</strong> Con viento del norte, explora <strong>Es Grau</strong> o el puerto de <strong>Maó</strong>.
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 6: Lunes 8 de septiembre - Rincones mágicos y atardeceres</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 10:00 h:</strong> Trayecto a <strong>Pedrera de s'Hostal</strong> (51 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>10:00 - 12:00 h:</strong> Explora el laberinto de piedra y jardines.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>12:00 - 13:30 h:</strong> Trayecto a <strong>Faro de Punta Nati</strong> (15 min) y almuerzo en <strong>Ciutadella</strong> (15 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:30 - 17:00 h:</strong> Último paseo por Ciutadella.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>17:00 - 19:00 h:</strong> Trayecto a <strong>Cova d'en Xoroi</strong> (40 min) para ver el atardecer.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>19:00 - 20:00 h:</strong> Regreso al hotel (33 min).</p>
-                </div>
-                <div class="info-box">
-                    <strong>Alternativa:</strong> Si hay viento del norte, ve a <strong>Es Grau</strong> para un atardecer tranquilo.
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 7: Martes 9 de septiembre - Naturaleza y despedida</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 10:00 h:</strong> Trayecto a <strong>Parque Natural de s'Albufera des Grau</strong> (23 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>10:00 - 12:00 h:</strong> Camina y observa la fauna y flora.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>12:00 - 13:00 h:</strong> Trayecto a <strong>Es Grau</strong> (6 min) y almuerzo en el pueblo. Recomendación: Restaurante Es Grau.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:00 - 14:30 h:</strong> Relájate en la playa de Es Grau.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>14:30 - 17:00 h:</strong> Visita el <strong>Fuerte de Marlborough</strong> (23 min), una fortificación militar inglesa.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>17:00 - 18:00 h:</strong> Regreso al hotel (20 min) para un baño final.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>18:00 - 19:00 h:</strong> Relajación en el hotel.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card" onclick="toggleContent(this)">
-            <div class="day-header">
-                <h2>Día 8: Miércoles 10 de septiembre - Día de partida</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="day-content">
-                <div class="activity">
-                    <p><strong>9:00 - 12:00 h:</strong> Disfruta de un último baño en <strong>Cala Alcaufar</strong> (10 min) o <strong>Punta Prima</strong>.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>12:00 - 13:30 h:</strong> Almuerzo en la zona de Sant Lluís.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>13:30 - 19:00 h:</strong> Últimos paseos por la isla.</p>
-                </div>
-                <div class="activity">
-                    <p><strong>19:00 h:</strong> Trayecto al aeropuerto (18 min).</p>
-                </div>
-                <div class="activity">
-                    <p><strong>20:00 h:</strong> Devolución del coche y vuelo de regreso.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="weather-info">
-            <h3>🌤️ Información meteorológica</h3>
-            <p>Recuerda consultar el viento y adaptar el itinerario según las condiciones. Las alternativas sugeridas te ayudarán a aprovechar al máximo cada día.</p>
-        </div>
-    </div>
-
-    <!-- Notes Modal -->
-    <div id="notesModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-sticky-note"></i> Notas del Viaje</h3>
-                <span class="close" onclick="closeModal('notesModal')">&times;</span>
-            </div>
-            <div class="notes-content">
-                <textarea id="dayNotes" placeholder="Añade tus notas para este día..."></textarea>
-                <button onclick="saveNotes()" class="save-btn">
-                    <i class="fas fa-save"></i> Guardar Notas
-                </button>
+                <div id="generalMap" class="general-map"></div>
             </div>
         </div>
     </div>

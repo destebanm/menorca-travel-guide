@@ -1,196 +1,14 @@
 // Menorca Travel Itinerary - Enhanced Interactive Features
-let map;
-let currentDay = 1;
-let weatherData = {};
-let offlineMode = false;
-
-// API Keys (usar variables de entorno en producción)
-const WEATHER_API_KEY = '30d71f1efc934b78b45154509242409'; // API gratuita de WeatherAPI
-
-// Coordinates for Menorca locations
-const locations = {
-    menorca: [39.9624, 4.0685],
-    mahon: [39.8885, 4.2659],
-    ciutadella: [40.0015, 3.8407],
-    calaTurqueta: [39.9381, 3.9517],
-    calaGaldana: [39.9347, 4.0422],
-    fornells: [40.0581, 4.1333],
-    pontDenGil: [39.8664, 4.2167],
-    calaMacarella: [39.9464, 3.9544],
-    monteToro: [39.9883, 4.1167],
-    hotel: [39.8664, 4.2167], // Hotel Occidental Menorca location
-};
-
-// Daily routes with coordinates
-const dailyRoutes = {
-    1: [
-        { name: 'Hotel Occidental Menorca', coords: locations.hotel, time: '9:00', activity: 'Check-in y llegada' },
-        { name: 'Playa de Punta Prima', coords: [39.8664, 4.2167], time: '10:00', activity: 'Primera playa del viaje' },
-        { name: 'Binibèquer Vell', coords: [39.8591, 4.2119], time: '17:00', activity: 'Pueblo pintoresco' }
-    ],
-    2: [
-        { name: 'Hotel', coords: locations.hotel, time: '9:00', activity: 'Salida' },
-        { name: 'Cala Galdana', coords: locations.calaGaldana, time: '9:45', activity: 'Base para Macarella' },
-        { name: 'Cala Macarella', coords: locations.calaMacarella, time: '10:00', activity: 'Playa paradisíaca' },
-        { name: 'Ciutadella', coords: locations.ciutadella, time: '14:00', activity: 'Ciudad medieval' }
-    ],
-    3: [
-        { name: 'Cala Cavalleria', coords: [40.0542, 4.0833], time: '10:00', activity: 'Norte salvaje' },
-        { name: 'Fornells', coords: locations.fornells, time: '14:00', activity: 'Pueblo pesquero' },
-        { name: 'Monte Toro', coords: locations.monteToro, time: '17:00', activity: 'Vistas 360°' }
-    ],
-    4: [
-        { name: 'Puerto de Mahón', coords: locations.mahon, time: '9:20', activity: 'Centro histórico' },
-        { name: 'Playa de Binidalí', coords: [39.8833, 4.2833], time: '16:00', activity: 'Cala tranquila' }
-    ],
-    5: [
-        { name: 'Cala en Turqueta', coords: locations.calaTurqueta, time: '10:00', activity: 'Cala virgen' },
-        { name: 'Cala en Bosch', coords: [39.9833, 3.8167], time: '13:30', activity: 'Playa familiar' }
-    ],
-    6: [
-        { name: 'Naveta des Tudons', coords: [40.0167, 3.8833], time: '10:00', activity: 'Prehistoria' },
-        { name: 'Es Mercadal', coords: [39.9917, 4.0917], time: '12:00', activity: 'Pueblo interior' },
-        { name: 'Ferreries', coords: [39.9758, 3.9986], time: '14:00', activity: 'Tradición rural' }
-    ],
-    7: [
-        { name: 'Son Bou', coords: [39.9167, 4.0667], time: '10:00', activity: 'Playa más larga' },
-        { name: 'Alaior', coords: [39.9333, 4.1333], time: '16:00', activity: 'Compras locales' }
-    ],
-    8: [
-        { name: 'Mahón Centro', coords: locations.mahon, time: '10:00', activity: 'Últimas compras' },
-        { name: 'Aeropuerto', coords: [39.8625, 4.2186], time: '19:00', activity: 'Despedida' }
-    ]
-};
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize enhanced features
-    initializeWeather();
     initializeItinerary();
     addKeyboardNavigation();
     addSmoothScrolling();
-    setupOfflineMode();
-    
-    // Add offline indicator
-    createOfflineIndicator();
-    
-    // Load saved notes
-    loadSavedNotes();
+    initializeMaps();
+    loadUserPreferences();
 });
 
 /**
- * Initialize weather functionality
- */
-async function initializeWeather() {
-    await updateCurrentWeather();
-    updateDailyWeather();
-    
-    // Update weather every 30 minutes
-    setInterval(updateCurrentWeather, 30 * 60 * 1000);
-}
-
-/**
- * Update current weather
- */
-async function updateCurrentWeather() {
-    if (offlineMode) {
-        showOfflineWeather();
-        return;
-    }
-    
-    try {
-        const response = await fetch(
-            `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=Menorca,Spain&aqi=no`
-        );
-        
-        if (!response.ok) throw new Error('Weather API error');
-        
-        const data = await response.json();
-        updateWeatherDisplay(data);
-        
-        // Cache for offline mode
-        localStorage.setItem('cachedWeather', JSON.stringify({
-            data: data,
-            timestamp: Date.now()
-        }));
-        
-    } catch (error) {
-        console.log('Weather API not available, using cached data');
-        showCachedWeather();
-    }
-}
-
-/**
- * Update weather display
- */
-function updateWeatherDisplay(data) {
-    const tempElement = document.querySelector('.temperature');
-    const descElement = document.querySelector('.weather-desc');
-    const iconElement = document.querySelector('.weather-icon');
-    
-    if (tempElement) tempElement.textContent = `${Math.round(data.current.temp_c)}°C`;
-    if (descElement) descElement.textContent = data.current.condition.text;
-    
-    // Update weather icon based on conditions
-    if (iconElement) {
-        const condition = data.current.condition.text.toLowerCase();
-        if (condition.includes('sun') || condition.includes('clear')) {
-            iconElement.className = 'fas fa-sun weather-icon';
-        } else if (condition.includes('cloud')) {
-            iconElement.className = 'fas fa-cloud weather-icon';
-        } else if (condition.includes('rain')) {
-            iconElement.className = 'fas fa-cloud-rain weather-icon';
-        } else {
-            iconElement.className = 'fas fa-cloud-sun weather-icon';
-        }
-    }
-}
-
-/**
- * Show cached weather when offline
- */
-function showCachedWeather() {
-    const cached = localStorage.getItem('cachedWeather');
-    if (cached) {
-        const { data, timestamp } = JSON.parse(cached);
-        
-        // Use cached data if less than 2 hours old
-        if (Date.now() - timestamp < 2 * 60 * 60 * 1000) {
-            updateWeatherDisplay(data);
-            return;
-        }
-    }
-    
-    showOfflineWeather();
-}
-
-/**
- * Show offline weather placeholder
- */
-function showOfflineWeather() {
-    const tempElement = document.querySelector('.temperature');
-    const descElement = document.querySelector('.weather-desc');
-    
-    if (tempElement) tempElement.textContent = 'Sin conexión';
-    if (descElement) descElement.textContent = 'Datos no disponibles';
-}
-
-/**
- * Update daily weather for each day card
- */
-function updateDailyWeather() {
-    // Simulate daily temperatures (in production, use forecast API)
-    const dailyTemps = [25, 27, 24, 26, 28, 23, 25, 26];
-    
-    document.querySelectorAll('.day-weather').forEach((element, index) => {
-        const tempSpan = element.querySelector('.day-temp');
-        if (tempSpan) {
-            tempSpan.textContent = `${dailyTemps[index] || 25}°`;
-        }
-    });
-}
-
-/**
- * Enhanced itinerary initialization
+ * Initialize the itinerary with enhanced features
  */
 function initializeItinerary() {
     const dayCards = document.querySelectorAll('.day-card');
@@ -200,13 +18,13 @@ function initializeItinerary() {
         card.setAttribute('role', 'button');
         card.setAttribute('tabindex', '0');
         
-        const header = card.querySelector('.day-header h2');
+        const header = card.querySelector('.day-title h2');
         if (header) {
-            card.setAttribute('aria-label', `Día ${index + 1}: ${header.textContent}`);
+            card.setAttribute('aria-label', `${header.textContent}`);
         }
     });
     
-    addToggleAllButtons();
+    updateProgressBar();
 }
 
 /**
@@ -226,353 +44,29 @@ function toggleContent(card) {
         });
     }
     
+    updateProgressBar();
     saveUserPreferences();
 }
 
 /**
- * Show main map modal
+ * Update progress bar based on opened days
  */
-function showMap() {
-    const modal = document.getElementById('mapModal');
-    modal.style.display = 'block';
+function updateProgressBar() {
+    const totalDays = document.querySelectorAll('.day-card').length;
+    const activeDays = document.querySelectorAll('.day-card.active').length;
+    const percentage = Math.round((activeDays / totalDays) * 100);
     
-    setTimeout(() => {
-        initializeMap();
-        showDayRoute(currentDay);
-    }, 100);
-}
-
-/**
- * Initialize Leaflet map
- */
-function initializeMap() {
-    if (map) {
-        map.remove();
-    }
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
     
-    map = L.map('map').setView(locations.menorca, 11);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-    
-    // Add all locations as markers
-    Object.entries(locations).forEach(([name, coords]) => {
-        if (name !== 'menorca') {
-            L.marker(coords)
-                .addTo(map)
-                .bindPopup(name.charAt(0).toUpperCase() + name.slice(1));
-        }
-    });
-}
-
-/**
- * Show specific day route on map
- */
-function showDayRoute(day) {
-    if (!map) return;
-    
-    currentDay = day;
-    
-    // Update active day button
-    document.querySelectorAll('.day-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.getAttribute('data-day') == day) {
-            btn.classList.add('active');
-        }
-    });
-    
-    // Clear existing route
-    map.eachLayer(layer => {
-        if (layer instanceof L.Polyline || (layer instanceof L.Marker && layer.options.dayRoute)) {
-            map.removeLayer(layer);
-        }
-    });
-    
-    const dayRoute = dailyRoutes[day];
-    if (!dayRoute) return;
-    
-    // Add route markers
-    const routeCoords = [];
-    dayRoute.forEach((stop, index) => {
-        const marker = L.marker(stop.coords, { dayRoute: true })
-            .addTo(map)
-            .bindPopup(`
-                <strong>${stop.name}</strong><br>
-                <i class="fas fa-clock"></i> ${stop.time}<br>
-                <i class="fas fa-info-circle"></i> ${stop.activity}
-            `);
-        
-        routeCoords.push(stop.coords);
-    });
-    
-    // Draw route line
-    if (routeCoords.length > 1) {
-        L.polyline(routeCoords, {
-            color: '#4a9b8e',
-            weight: 4,
-            opacity: 0.8
-        }).addTo(map);
-    }
-    
-    // Fit map to route
-    if (routeCoords.length > 0) {
-        map.fitBounds(routeCoords, { padding: [20, 20] });
+    if (progressFill && progressText) {
+        progressFill.style.width = `${percentage}%`;
+        progressText.textContent = `Progreso del viaje: ${percentage}%`;
     }
 }
 
 /**
- * Show day-specific map
- */
-function showDayMap(day) {
-    showMap();
-    setTimeout(() => showDayRoute(day), 200);
-}
-
-/**
- * Show weather forecast modal
- */
-async function showWeatherForecast() {
-    const modal = document.getElementById('weatherModal');
-    const forecastContainer = document.getElementById('weatherForecast');
-    
-    modal.style.display = 'block';
-    forecastContainer.innerHTML = '<div class="loading">Cargando previsión...</div>';
-    
-    if (offlineMode) {
-        forecastContainer.innerHTML = `
-            <div class="forecast-day">
-                <div class="forecast-date">Modo offline</div>
-                <div class="forecast-weather">
-                    <i class="fas fa-wifi-slash"></i>
-                    <span>Datos no disponibles sin conexión</span>
-                </div>
-            </div>
-        `;
-        return;
-    }
-    
-    try {
-        const response = await fetch(
-            `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=Menorca,Spain&days=7`
-        );
-        
-        if (!response.ok) throw new Error('Forecast API error');
-        
-        const data = await response.json();
-        displayWeatherForecast(data.forecast.forecastday);
-        
-    } catch (error) {
-        forecastContainer.innerHTML = `
-            <div class="forecast-day">
-                <div class="forecast-date">Error</div>
-                <div class="forecast-weather">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>No se pudo cargar la previsión</span>
-                </div>
-            </div>
-        `;
-    }
-}
-
-/**
- * Display weather forecast
- */
-function displayWeatherForecast(forecastDays) {
-    const forecastContainer = document.getElementById('weatherForecast');
-    
-    const forecastHTML = forecastDays.map(day => {
-        const date = new Date(day.date);
-        const dayName = date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' });
-        
-        return `
-            <div class="forecast-day">
-                <div class="forecast-date">${dayName}</div>
-                <div class="forecast-weather">
-                    <i class="fas fa-thermometer-half"></i>
-                    <span class="forecast-temp">${Math.round(day.day.maxtemp_c)}°/${Math.round(day.day.mintemp_c)}°</span>
-                    <span>${day.day.condition.text}</span>
-                </div>
-            </div>
-        `;
-    }).join('');
-    
-    forecastContainer.innerHTML = forecastHTML;
-}
-
-/**
- * Toggle offline mode
- */
-function toggleOfflineMode() {
-    offlineMode = !offlineMode;
-    
-    const indicator = document.querySelector('.offline-indicator');
-    const btn = document.querySelector('.nav-btn[onclick="toggleOfflineMode()"]');
-    
-    if (offlineMode) {
-        indicator.classList.add('show');
-        indicator.classList.remove('online');
-        indicator.innerHTML = '<i class="fas fa-wifi-slash"></i> Modo offline activo';
-        btn.innerHTML = '<i class="fas fa-wifi-slash"></i> Online';
-    } else {
-        indicator.classList.remove('show');
-        btn.innerHTML = '<i class="fas fa-wifi"></i> Offline';
-        updateCurrentWeather();
-    }
-    
-    localStorage.setItem('offlineMode', offlineMode);
-}
-
-/**
- * Setup offline mode functionality
- */
-function setupOfflineMode() {
-    // Check if previously set to offline
-    const savedOfflineMode = localStorage.getItem('offlineMode') === 'true';
-    if (savedOfflineMode) {
-        toggleOfflineMode();
-    }
-    
-    // Monitor network status
-    window.addEventListener('online', () => {
-        if (!offlineMode) {
-            const indicator = document.querySelector('.offline-indicator');
-            indicator.classList.add('show', 'online');
-            indicator.innerHTML = '<i class="fas fa-wifi"></i> Conexión restaurada';
-            setTimeout(() => indicator.classList.remove('show'), 3000);
-            updateCurrentWeather();
-        }
-    });
-    
-    window.addEventListener('offline', () => {
-        if (!offlineMode) {
-            const indicator = document.querySelector('.offline-indicator');
-            indicator.classList.add('show');
-            indicator.classList.remove('online');
-            indicator.innerHTML = '<i class="fas fa-wifi-slash"></i> Sin conexión a internet';
-        }
-    });
-}
-
-/**
- * Create offline indicator
- */
-function createOfflineIndicator() {
-    const indicator = document.createElement('div');
-    indicator.className = 'offline-indicator';
-    document.body.appendChild(indicator);
-}
-
-/**
- * Add notes functionality
- */
-function addNotes(day) {
-    const modal = document.getElementById('notesModal');
-    const textarea = document.getElementById('dayNotes');
-    
-    // Load existing notes for this day
-    const savedNotes = localStorage.getItem(`dayNotes_${day}`) || '';
-    textarea.value = savedNotes;
-    textarea.setAttribute('data-day', day);
-    
-    modal.style.display = 'block';
-    textarea.focus();
-}
-
-/**
- * Save notes
- */
-function saveNotes() {
-    const textarea = document.getElementById('dayNotes');
-    const day = textarea.getAttribute('data-day');
-    const notes = textarea.value;
-    
-    localStorage.setItem(`dayNotes_${day}`, notes);
-    closeModal('notesModal');
-    
-    // Show success feedback
-    showToast('Notas guardadas correctamente');
-}
-
-/**
- * Load saved notes indicators
- */
-function loadSavedNotes() {
-    for (let day = 1; day <= 8; day++) {
-        const notes = localStorage.getItem(`dayNotes_${day}`);
-        if (notes && notes.trim()) {
-            const dayCard = document.querySelector(`[data-day="${day}"]`);
-            if (dayCard) {
-                const notesBtn = dayCard.querySelector('.control-btn[onclick*="addNotes"]');
-                if (notesBtn) {
-                    notesBtn.innerHTML = '<i class="fas fa-sticky-note" style="color: #ffd700;"></i> Notas';
-                    notesBtn.setAttribute('title', 'Ver/editar notas guardadas');
-                }
-            }
-        }
-    }
-}
-
-/**
- * Share day functionality
- */
-function shareDay(day) {
-    const dayCard = document.querySelector(`[data-day="${day}"]`);
-    const dayTitle = dayCard.querySelector('h2').textContent;
-    
-    const shareData = {
-        title: `Menorca Travel Guide - ${dayTitle}`,
-        text: `Mira este día del itinerario de Menorca: ${dayTitle}`,
-        url: `${window.location.href}#day${day}`
-    };
-    
-    if (navigator.share) {
-        navigator.share(shareData);
-    } else {
-        // Fallback: copy to clipboard
-        const url = `${window.location.href}#day${day}`;
-        navigator.clipboard.writeText(url).then(() => {
-            showToast('Enlace copiado al portapapeles');
-        });
-    }
-}
-
-/**
- * Close modal
- */
-function closeModal(modalId) {
-    document.getElementById(modalId).style.display = 'none';
-}
-
-/**
- * Show toast notification
- */
-function showToast(message) {
-    const toast = document.createElement('div');
-    toast.style.cssText = `
-        position: fixed;
-        bottom: 100px;
-        right: 20px;
-        background: var(--primary-color);
-        color: white;
-        padding: 15px 20px;
-        border-radius: 25px;
-        font-size: 0.9rem;
-        z-index: 1002;
-        animation: slideIn 0.3s ease;
-    `;
-    toast.textContent = message;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-/**
- * Enhanced keyboard navigation
+ * Add keyboard navigation support
  */
 function addKeyboardNavigation() {
     document.addEventListener('keydown', function(e) {
@@ -586,40 +80,12 @@ function addKeyboardNavigation() {
                 e.preventDefault();
                 navigateCards(e.target, e.key === 'ArrowDown' ? 1 : -1);
             }
-            
-            // Quick shortcuts
-            if (e.key === 'm' || e.key === 'M') {
-                e.preventDefault();
-                const day = e.target.getAttribute('data-day');
-                showDayMap(parseInt(day));
-            }
-        }
-        
-        // Global shortcuts
-        if (e.ctrlKey || e.metaKey) {
-            if (e.key === 'm') {
-                e.preventDefault();
-                showMap();
-            }
-            if (e.key === 'w') {
-                e.preventDefault();
-                showWeatherForecast();
-            }
-        }
-        
-        // Close modals with Escape
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal').forEach(modal => {
-                if (modal.style.display === 'block') {
-                    modal.style.display = 'none';
-                }
-            });
         }
     });
 }
 
 /**
- * Navigate between cards
+ * Navigate between day cards using keyboard
  */
 function navigateCards(currentCard, direction) {
     const cards = Array.from(document.querySelectorAll('.day-card'));
@@ -636,63 +102,7 @@ function navigateCards(currentCard, direction) {
 }
 
 /**
- * Enhanced toggle all functionality
- */
-function addToggleAllButtons() {
-    const header = document.querySelector('.header-content');
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'toggle-controls';
-    buttonContainer.style.marginTop = '20px';
-    
-    const expandAllBtn = createButton('📂 Expandir todo', expandAll);
-    const collapseAllBtn = createButton('📁 Contraer todo', collapseAll);
-    
-    buttonContainer.appendChild(expandAllBtn);
-    buttonContainer.appendChild(collapseAllBtn);
-    header.appendChild(buttonContainer);
-}
-
-/**
- * Create styled button
- */
-function createButton(text, clickHandler) {
-    const button = document.createElement('button');
-    button.textContent = text;
-    button.onclick = clickHandler;
-    button.className = 'nav-btn';
-    return button;
-}
-
-/**
- * Expand all day cards
- */
-function expandAll() {
-    const cards = document.querySelectorAll('.day-card');
-    cards.forEach(card => {
-        if (!card.classList.contains('active')) {
-            card.classList.add('active');
-            card.setAttribute('aria-expanded', 'true');
-        }
-    });
-    saveUserPreferences();
-}
-
-/**
- * Collapse all day cards
- */
-function collapseAll() {
-    const cards = document.querySelectorAll('.day-card');
-    cards.forEach(card => {
-        if (card.classList.contains('active')) {
-            card.classList.remove('active');
-            card.setAttribute('aria-expanded', 'false');
-        }
-    });
-    saveUserPreferences();
-}
-
-/**
- * Enhanced smooth scrolling
+ * Add smooth scrolling behavior and scroll to top button
  */
 function addSmoothScrolling() {
     const scrollToTopBtn = createScrollToTopButton();
@@ -718,12 +128,12 @@ function createScrollToTopButton() {
     button.setAttribute('aria-label', 'Volver arriba');
     button.style.cssText = `
         position: fixed;
-        bottom: 30px;
+        bottom: 100px;
         right: 30px;
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background: var(--primary-color);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: white;
         border: none;
         font-size: 20px;
@@ -731,7 +141,7 @@ function createScrollToTopButton() {
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
-        z-index: 1000;
+        z-index: 999;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     `;
     
@@ -742,11 +152,219 @@ function createScrollToTopButton() {
         });
     });
     
+    button.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+    });
+    
+    button.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+    
     return button;
 }
 
 /**
- * Save user preferences
+ * Initialize maps for each day
+ */
+function initializeMaps() {
+    const dayMaps = document.querySelectorAll('.day-map');
+    dayMaps.forEach((mapElement, index) => {
+        const dayNumber = index + 1;
+        initializeDayMap(mapElement, dayNumber);
+    });
+}
+
+/**
+ * Initialize map for a specific day
+ */
+function initializeDayMap(mapElement, dayNumber) {
+    // Hotel location (always marked in red)
+    const hotelLocation = [39.8885, 4.2658]; // Mahón area
+    
+    // Day-specific locations
+    const dayLocations = {
+        1: { center: [39.8885, 4.2658], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Playa Es Grau', coords: [39.9342, 4.2547], type: 'beach' },
+            { name: 'Puerto de Mahón', coords: [39.8883, 4.2659], type: 'poi' }
+        ]},
+        2: { center: [40.0003, 3.8385], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Cala Turqueta', coords: [39.9547, 3.9435], type: 'beach' },
+            { name: 'Ciutadella', coords: [40.0003, 3.8385], type: 'city' }
+        ]},
+        3: { center: [40.0842, 4.1478], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Cala Pregonda', coords: [40.0842, 4.1478], type: 'beach' },
+            { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' }
+        ]},
+        4: { center: [40.0586, 4.1378], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Playa Tirant', coords: [40.0489, 4.0689], type: 'beach' },
+            { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' }
+        ]},
+        5: { center: [39.9435, 3.9342], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Cala Macarella', coords: [39.9435, 3.9342], type: 'beach' },
+            { name: 'Son Saura', coords: [39.9245, 3.8956], type: 'beach' }
+        ]},
+        6: { center: [39.9789, 4.0978], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Cala Mitjana', coords: [39.9267, 4.0456], type: 'beach' },
+            { name: 'Monte Toro', coords: [39.9789, 4.0978], type: 'mountain' }
+        ]},
+        7: { center: [39.8885, 4.2658], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Cala Presili', coords: [39.8756, 4.3156], type: 'beach' },
+            { name: 'Centro Mahón', coords: [39.8883, 4.2659], type: 'shopping' }
+        ]},
+        8: { center: [39.8885, 4.2658], places: [
+            { name: 'Hotel Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+            { name: 'Cala Mesquida', coords: [39.9678, 4.3189], type: 'beach' },
+            { name: 'Aeropuerto', coords: [39.8625, 4.2189], type: 'airport' }
+        ]}
+    };
+    
+    const dayData = dayLocations[dayNumber];
+    if (!dayData) return;
+    
+    try {
+        const map = L.map(mapElement.id).setView(dayData.center, 12);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Add markers for each place
+        dayData.places.forEach(place => {
+            const icon = getMarkerIcon(place.type);
+            const marker = L.marker(place.coords, { icon }).addTo(map);
+            marker.bindPopup(`<strong>${place.name}</strong><br>
+                <a href="https://maps.google.com/?q=${place.coords[0]},${place.coords[1]}" target="_blank">
+                    🗺️ Abrir en Google Maps
+                </a>`);
+        });
+        
+        // Fit map to show all markers
+        if (dayData.places.length > 1) {
+            const group = new L.featureGroup(map._layers);
+            map.fitBounds(group.getBounds().pad(0.1));
+        }
+        
+    } catch (error) {
+        mapElement.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #666;">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">🗺️</div>
+                <div style="font-weight: 500;">Mapa del Día ${dayNumber}</div>
+                <div style="font-size: 0.9rem; margin-top: 0.5rem;">
+                    <a href="https://maps.google.com/?q=Menorca" target="_blank" style="color: var(--primary-color);">
+                        Ver en Google Maps
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+}
+
+/**
+ * Get marker icon based on place type
+ */
+function getMarkerIcon(type) {
+    const icons = {
+        hotel: '🏨',
+        beach: '🏖️',
+        city: '🏛️',
+        village: '🏘️',
+        mountain: '⛰️',
+        shopping: '🛍️',
+        airport: '✈️',
+        poi: '📍'
+    };
+    
+    const emoji = icons[type] || '📍';
+    
+    return L.divIcon({
+        html: `<div style="
+            background: ${type === 'hotel' ? '#e74c3c' : 'var(--primary-color)'};
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        ">${emoji}</div>`,
+        className: 'custom-marker',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+    });
+}
+
+/**
+ * Show general map modal
+ */
+function showGeneralMap() {
+    const modal = document.getElementById('mapModal');
+    const mapContainer = document.getElementById('generalMap');
+    
+    modal.classList.add('show');
+    modal.style.display = 'flex';
+    
+    // Initialize general map if not already done
+    if (!mapContainer._leaflet_id) {
+        initializeGeneralMap();
+    }
+}
+
+/**
+ * Initialize the general map of Menorca
+ */
+function initializeGeneralMap() {
+    const mapContainer = document.getElementById('generalMap');
+    const map = L.map(mapContainer).setView([39.9624, 4.0544], 10);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Add all important locations
+    const allLocations = [
+        { name: 'Hotel Base - Mahón', coords: [39.8885, 4.2658], type: 'hotel' },
+        { name: 'Ciutadella', coords: [40.0003, 3.8385], type: 'city' },
+        { name: 'Fornells', coords: [40.0586, 4.1378], type: 'village' },
+        { name: 'Cala Turqueta', coords: [39.9547, 3.9435], type: 'beach' },
+        { name: 'Cala Macarella', coords: [39.9435, 3.9342], type: 'beach' },
+        { name: 'Cala Pregonda', coords: [40.0842, 4.1478], type: 'beach' },
+        { name: 'Monte Toro', coords: [39.9789, 4.0978], type: 'mountain' },
+        { name: 'Aeropuerto', coords: [39.8625, 4.2189], type: 'airport' }
+    ];
+    
+    allLocations.forEach(location => {
+        const icon = getMarkerIcon(location.type);
+        const marker = L.marker(location.coords, { icon }).addTo(map);
+        marker.bindPopup(`<strong>${location.name}</strong><br>
+            <a href="https://maps.google.com/?q=${location.coords[0]},${location.coords[1]}" target="_blank">
+                🗺️ Abrir en Google Maps
+            </a>`);
+    });
+}
+
+/**
+ * Close modal
+ */
+function closeModal() {
+    const modal = document.getElementById('mapModal');
+    modal.classList.remove('show');
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 300);
+}
+
+/**
+ * Save user preferences to localStorage
  */
 function saveUserPreferences() {
     const preferences = {
@@ -761,11 +379,15 @@ function saveUserPreferences() {
         }
     });
     
-    localStorage.setItem('menorcaItineraryPreferences', JSON.stringify(preferences));
+    try {
+        localStorage.setItem('menorcaItineraryPreferences', JSON.stringify(preferences));
+    } catch (error) {
+        console.log('No se pudieron guardar las preferencias');
+    }
 }
 
 /**
- * Load user preferences
+ * Load user preferences from localStorage
  */
 function loadUserPreferences() {
     try {
@@ -773,7 +395,8 @@ function loadUserPreferences() {
         if (saved) {
             const preferences = JSON.parse(saved);
             
-            if (Date.now() - preferences.timestamp < 24 * 60 * 60 * 1000) {
+            // Only load preferences if they're recent (within 7 days)
+            if (Date.now() - preferences.timestamp < 7 * 24 * 60 * 60 * 1000) {
                 const cards = document.querySelectorAll('.day-card');
                 preferences.expandedDays.forEach(dayIndex => {
                     if (cards[dayIndex]) {
@@ -781,33 +404,62 @@ function loadUserPreferences() {
                         cards[dayIndex].setAttribute('aria-expanded', 'true');
                     }
                 });
+                updateProgressBar();
             }
         }
     } catch (error) {
-        console.log('No previous preferences found');
+        console.log('No se pudieron cargar las preferencias previas');
     }
 }
 
-// Load preferences when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(loadUserPreferences, 100);
+/**
+ * Expand all day cards
+ */
+function expandAll() {
+    const cards = document.querySelectorAll('.day-card');
+    cards.forEach(card => {
+        if (!card.classList.contains('active')) {
+            card.classList.add('active');
+            card.setAttribute('aria-expanded', 'true');
+        }
+    });
+    updateProgressBar();
+    saveUserPreferences();
+}
+
+/**
+ * Collapse all day cards
+ */
+function collapseAll() {
+    const cards = document.querySelectorAll('.day-card');
+    cards.forEach(card => {
+        if (card.classList.contains('active')) {
+            card.classList.remove('active');
+            card.setAttribute('aria-expanded', 'false');
+        }
+    });
+    updateProgressBar();
+    saveUserPreferences();
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('mapModal');
+    if (e.target === modal) {
+        closeModal();
+    }
 });
 
-// Close modals when clicking outside
-window.addEventListener('click', function(event) {
-    if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
     }
 });
 
 // Export functions for global access
 window.toggleContent = toggleContent;
-window.showMap = showMap;
-window.showDayRoute = showDayRoute;
-window.showDayMap = showDayMap;
-window.showWeatherForecast = showWeatherForecast;
-window.toggleOfflineMode = toggleOfflineMode;
-window.addNotes = addNotes;
-window.saveNotes = saveNotes;
-window.shareDay = shareDay;
+window.showGeneralMap = showGeneralMap;
 window.closeModal = closeModal;
+window.expandAll = expandAll;
+window.collapseAll = collapseAll;
