@@ -291,4 +291,386 @@ header p {
         box-shadow: none;
         border: 1px solid #ccc;
     }
+    
+    .modal, .quick-nav, .day-controls, .weather-widget {
+        display: none !important;
+    }
+}
+
+/* Enhanced header styles */
+.header-content {
+    text-align: center;
+    position: relative;
+}
+
+.weather-widget {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: white;
+}
+
+.weather-icon {
+    font-size: 2rem;
+    color: #ffd700;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.temperature {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.weather-desc {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.quick-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.nav-btn, .control-btn, .day-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn:hover, .control-btn:hover, .day-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Enhanced day card styles */
+.day-card {
+    position: relative;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.day-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-right: 20px;
+}
+
+.day-weather {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: white;
+}
+
+.day-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.day-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(74, 155, 142, 0.1);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.summary-item i {
+    color: var(--primary-color);
+    width: 16px;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover {
+    opacity: 0.7;
+}
+
+/* Map styles */
+.map-container {
+    height: 400px;
+    width: 100%;
+}
+
+.map-controls {
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.day-btn {
+    background: #e9ecef;
+    color: #495057;
+    border: 1px solid #dee2e6;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.day-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Weather forecast styles */
+.weather-forecast {
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.forecast-day {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+.forecast-day:hover {
+    background-color: #f8f9fa;
+}
+
+.forecast-date {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.forecast-weather {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.forecast-temp {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Notes modal styles */
+.notes-content {
+    padding: 20px;
+}
+
+#dayNotes {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+.save-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+    background: #3a8572;
+    transform: translateY(-2px);
+}
+
+/* Offline indicator */
+.offline-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #ff6b6b;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    z-index: 1001;
+}
+
+.offline-indicator.show {
+    display: flex;
+}
+
+.offline-indicator.online {
+    background: #51cf66;
+}
+
+/* Enhanced responsive design */
+@media (max-width: 768px) {
+    .weather-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .quick-nav {
+        flex-wrap: wrap;
+    }
+    
+    .nav-btn {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+    
+    .day-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .day-weather {
+        align-self: flex-end;
+    }
+    
+    .day-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        max-height: 95vh;
+    }
+    
+    .map-container {
+        height: 300px;
+    }
+}
+
+/* Loading animations */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 }

@@ -1,148 +1,219 @@
-# Menorca Travel Itinerary Website
+# 🏝️ Menorca Travel Guide - Itinerario Interactivo Mejorado
 
-Una guía interactiva de viaje de 8 días por Menorca con itinerarios detallados, alternativas para días de lluvia y consejos prácticos.
+Una guía completa e interactiva de 8 días por Menorca con **mapas en tiempo real**, **información meteorológica actualizada** y **experiencia de usuario optimizada** para el viaje perfecto.
 
-## 🏝️ Características
+## ✨ Nuevas Características Destacadas
 
-- **Itinerario de 8 días** con actividades detalladas para cada día
-- **Interfaz interactiva** con tarjetas expansibles por día
-- **Alternativas para mal tiempo** incluidas en cada día
-- **Diseño responsivo** optimizado para móvil y escritorio
-- **Navegación accesible** con soporte para teclado
+### 🗺️ **Mapas Interactivos**
+- **Mapa general** con todos los puntos de interés
+- **Rutas diarias** con trayectos optimizados
+- **Marcadores interactivos** con información detallada
+- **Visualización de distancias** y tiempos de viaje
+
+### 🌤️ **Tiempo Real**
+- **Clima actual** de Menorca actualizado cada 30 minutos
+- **Previsión extendida** de 7 días
+- **Información por día** en cada tarjeta del itinerario
+- **Modo offline** con datos en caché
+
+### 📱 **UX Optimizada para Viajeros**
+- **Controles rápidos** en el header (Mapa, Tiempo, Offline)
+- **Notas personales** por día con guardado automático
+- **Compartir días** específicos del itinerario
+- **Indicadores visuales** de contenido guardado
+- **Navegación por teclado** mejorada
+- **Modo offline** completo
+
+## 🚀 Funcionalidades Principales
+
+### 📋 **Itinerario Detallado**
+- **8 días completos** con horarios optimizados
+- **Ajuste del Día 1**: Siesta después de la comida por cansancio del viaje
+- **Alternativas por clima** para cada día
+- **Información de costes** y distancias
+- **Resumen diario** con datos clave
+
+### 🎯 **Interactividad Avanzada**
+- **Tarjetas expandibles** con animaciones suaves
+- **Mapas por día** con rutas específicas
+- **Sistema de notas** personal
+- **Compartir contenido** vía Web Share API
 - **Preferencias guardadas** en localStorage
-- **Animaciones suaves** y transiciones elegantes
 
-## 🚀 Tecnologías
+### 🌐 **Conectividad Inteligente**
+- **API de tiempo real** (WeatherAPI)
+- **Modo offline** con caché inteligente
+- **Indicador de conexión** automático
+- **Datos persistentes** sin conexión
 
-- **HTML5** - Estructura semántica
-- **CSS3** - Diseño moderno con variables CSS y animaciones
-- **JavaScript ES6+** - Funcionalidad interactiva
-- **GitHub Pages** - Despliegue automático
+## 🗺️ Mapas y Ubicaciones
 
-## 📋 Estructura del Proyecto
+### Coordenadas Principales
+```javascript
+Mahón: [39.8885, 4.2659]
+Ciutadella: [40.0015, 3.8407]
+Cala Turqueta: [39.9381, 3.9517]
+Fornells: [40.0581, 4.1333]
+Monte Toro: [39.9883, 4.1167]
+```
+
+### Rutas por Día
+- **Día 1**: Hotel → Punta Prima → Binibèquer (25km)
+- **Día 2**: Cala Galdana → Macarella → Ciutadella (45km)
+- **Día 3**: Cavalleria → Fornells → Monte Toro (60km)
+- **Día 4**: Mahón → Binidalí (15km)
+- **Y más...**
+
+## 🌤️ Información Meteorológica
+
+### API Integration
+- **Proveedor**: WeatherAPI (clave incluida)
+- **Actualización**: Cada 30 minutos
+- **Datos**: Temperatura, condiciones, previsión 7 días
+- **Cache**: 2 horas para modo offline
+
+### Funcionalidades Climáticas
+- **Widget principal** en header
+- **Temperatura por día** en tarjetas
+- **Modal de previsión** extendida
+- **Recomendaciones** según condiciones
+
+## 📱 Mejoras de UX
+
+### Navegación Intuitiva
+```bash
+Ctrl/Cmd + M  → Abrir mapa general
+Ctrl/Cmd + W  → Mostrar previsión del tiempo
+M (en tarjeta) → Mapa del día específico
+Escape        → Cerrar modales
+Espacio/Enter → Expandir/contraer día
+```
+
+### Controles por Día
+- **🗺️ Mapa**: Ver ruta específica del día
+- **📤 Compartir**: Enviar día via Web Share API
+- **📝 Notas**: Añadir comentarios personales
+
+### Indicadores Visuales
+- **📝 Dorado**: Día con notas guardadas
+- **🌡️ Temperatura**: Actualizada en tiempo real
+- **🔌 Conexión**: Estado online/offline
+- **✅ Guardado**: Confirmación de acciones
+
+## 🛠️ Tecnologías Utilizadas
+
+### Frontend
+- **HTML5** con estructura semántica mejorada
+- **CSS3** con variables CSS y animaciones
+- **JavaScript ES6+** con APIs modernas
+- **Leaflet.js** para mapas interactivos
+- **Font Awesome** para iconografía
+
+### APIs Externas
+- **WeatherAPI** para datos meteorológicos
+- **OpenStreetMap** para mapas base
+- **Web Share API** para compartir contenido
+- **Geolocation API** para ubicación (futuro)
+
+### Persistencia
+- **localStorage** para preferencias y notas
+- **Cache API** para modo offline
+- **IndexedDB** para datos complejos (futuro)
+
+## � Estructura Mejorada
 
 ```
 menorca/
-├── index.html          # Página principal con el itinerario
-├── styles.css          # Estilos responsivos y animaciones
-├── script.js           # Funcionalidad interactiva
+├── index.html          # Página principal mejorada
+├── styles.css          # Estilos responsivos + nuevos componentes
+├── script.js           # Funcionalidad completa + APIs
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml  # Configuración de GitHub Actions
-└── README.md           # Documentación del proyecto
+│       └── deploy.yml  # Deploy automático
+└── README.md           # Documentación completa
 ```
 
-## 🌟 Funcionalidades Interactivas
+## 🚀 Instalación y Uso
 
-### Navegación por Días
-- **Clic/Tap**: Expandir/contraer contenido de cada día
-- **Teclado**: Usar `Espacio` o `Enter` para expandir
-- **Flechas**: Navegar entre días con ↑ ↓
-
-### Controles Globales
-- **Expandir Todo**: Abrir todas las tarjetas de días
-- **Contraer Todo**: Cerrar todas las tarjetas
-- **Scroll to Top**: Botón flotante para volver arriba
-
-### Persistencia
-- Las preferencias de expansión se guardan en localStorage
-- Se mantienen durante 24 horas para una experiencia fluida
-
-## 🎨 Diseño
-
-### Paleta de Colores
-- **Primario**: `#4a9b8e` (Verde mar mediterráneo)
-- **Secundario**: `#2c6e49` (Verde bosque)
-- **Acento**: `#f4f7f5` (Blanco roto)
-
-### Tipografía
-- **Principal**: Poppins (Google Fonts)
-- **Fallback**: Sans-serif system fonts
-
-### Responsive Design
-- **Móvil**: < 768px
-- **Tablet**: 768px - 1024px  
-- **Desktop**: > 1024px
-
-## 🚢 Despliegue
-
-### GitHub Pages
-El sitio se despliega automáticamente via GitHub Actions cuando se hace push a `main`:
-
-1. **Push a main** → Dispara el workflow
-2. **GitHub Actions** → Procesa los archivos
-3. **GitHub Pages** → Sitio disponible en la URL
-
-### Configuración Local
+### Desarrollo Local
 ```bash
-# Clonar el repositorio
-git clone [tu-repo-url]
-cd menorca
+# Clonar repositorio
+git clone https://github.com/destebanm/menorca-travel-guide.git
+cd menorca-travel-guide
 
-# Abrir en un servidor local (opcional)
+# Servir localmente
 python -m http.server 8000
 # o
 npx serve .
+
+# Abrir en navegador
+open http://localhost:8000
 ```
 
-## 📍 Itinerario Incluido
+### GitHub Pages
+**URL en vivo**: https://destebanm.github.io/menorca-travel-guide/
 
-### Día 1: Llegada a Mahón
-- Exploración del puerto y centro histórico
-- Cena en restaurante tradicional
+## 💡 Uso Durante el Viaje
 
-### Día 2: Ciudadela y Cala Turqueta
-- Ciudad medieval de Ciudadela
-- Playa paradisíaca de Cala Turqueta
+### Preparación
+1. **Visita la web** antes del viaje
+2. **Explora los mapas** y rutas
+3. **Añade notas personales** por día
+4. **Activa modo offline** si necesario
 
-### Día 3: Camí de Cavalls Norte
-- Senderismo por el sendero costero
-- Calas vírgenes del norte
+### Durante el Viaje
+1. **Consulta el tiempo** cada mañana
+2. **Sigue la ruta** del día en el mapa
+3. **Ajusta según clima** con alternativas
+4. **Toma notas** de tus experiencias
 
-### Día 4: Fornells y Actividades Acuáticas
-- Pueblo pesquero de Fornells
-- Kayak, windsurf o navegación
+### Características Móviles
+- **Diseño responsive** optimizado para móvil
+- **Touch gestures** para navegación
+- **Botones grandes** para uso fácil
+- **Carga rápida** con recursos optimizados
 
-### Día 5: Playas del Sur
-- Cala Macarella y Macarelleta
-- Son Saura y otras calas
+## 🔧 Configuración API
 
-### Día 6: Cultura y Tradición
-- Naveta des Tudons (prehistoria)
-- Pueblos del interior (Es Mercadal, Ferreries)
+### WeatherAPI (Opcional)
+Si quieres tu propia clave API:
+```javascript
+// En script.js, línea 8
+const WEATHER_API_KEY = 'tu_clave_aqui';
+```
 
-### Día 7: Relax y Compras
-- Día libre para relax
-- Compras de souvenirs y productos locales
+### Registro gratuito en:
+- [WeatherAPI.com](https://weatherapi.com) - 1M llamadas/mes gratis
 
-### Día 8: Mahón y Despedida
-- Últimas compras
-- Traslado al aeropuerto
+## 🤝 Contribuciones
 
-## 🌧️ Alternativas para Días de Lluvia
+### Áreas de Mejora
+- [ ] **Geolocalización** automática
+- [ ] **Notificaciones push** para recordatorios
+- [ ] **Integración con calendario**
+- [ ] **Fotos de usuarios** en ubicaciones
+- [ ] **Reseñas y ratings** de lugares
 
-Cada día incluye opciones cubiertas:
-- Museos y centros culturales
-- Bodegas y queserías
-- Centros comerciales y mercados
-- Actividades gastronómicas
-
-## 🛠️ Contribuir
-
+### Cómo Contribuir
 1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -m 'Añadir nueva funcionalidad'`)
+2. Crea rama para feature (`git checkout -b feature/nueva-funcionalidad`)
+3. Commit cambios (`git commit -m 'Añadir funcionalidad'`)
 4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
+5. Abre Pull Request
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+Proyecto bajo Licencia MIT - ver [LICENSE](LICENSE) para detalles.
 
-## 🤝 Contacto
+## 🌟 Agradecimientos
 
-Si tienes preguntas o sugerencias sobre el itinerario, no dudes en abrir un issue en el repositorio.
+- **OpenStreetMap** por los mapas base
+- **WeatherAPI** por datos meteorológicos
+- **Leaflet.js** por la biblioteca de mapas
+- **Font Awesome** por los iconos
 
 ---
 
-¡Disfruta tu viaje a Menorca! 🏖️✨
+**¡Disfruta tu aventura en Menorca! 🏖️🗺️**
+
+*Última actualización: Septiembre 2025*

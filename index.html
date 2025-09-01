@@ -3,23 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Itinerario de Menorca</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>🏝️ Menorca Travel Guide - Itinerario Interactivo</title>
+    <meta name="description" content="Guía completa de 8 días por Menorca con mapas interactivos, tiempo en tiempo real y el mejor UX para tu viaje">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🏝️ Itinerario de 8 días en Menorca</h1>
-            <p>Una ruta optimizada para que disfrutes al máximo, combinando playas, cultura y gastronomía. ¡Haz clic en cada día para ver los detalles!</p>
+            <div class="header-content">
+                <h1>🏝️ Itinerario de 8 días en Menorca</h1>
+                <p>Una ruta optimizada para que disfrutes al máximo, combinando playas, cultura y gastronomía.</p>
+                
+                <!-- Weather Widget -->
+                <div class="weather-widget">
+                    <div class="weather-info">
+                        <i class="fas fa-sun weather-icon"></i>
+                        <div class="weather-details">
+                            <span class="temperature">Cargando...</span>
+                            <span class="weather-desc">Obteniendo tiempo...</span>
+                        </div>
+                        <div class="location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Menorca, ES</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation -->
+                <div class="quick-nav">
+                    <button class="nav-btn" onclick="showMap()" title="Ver mapa general">
+                        <i class="fas fa-map"></i> Mapa
+                    </button>
+                    <button class="nav-btn" onclick="showWeatherForecast()" title="Previsión 7 días">
+                        <i class="fas fa-cloud-sun"></i> Tiempo
+                    </button>
+                    <button class="nav-btn" onclick="toggleOfflineMode()" title="Modo offline">
+                        <i class="fas fa-wifi"></i> Offline
+                    </button>
+                </div>
+            </div>
         </header>
 
-        <div class="day-card" onclick="toggleContent(this)">
+        <!-- Map Modal -->
+        <div id="mapModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-map"></i> Mapa del Itinerario</h3>
+                    <span class="close" onclick="closeModal('mapModal')">&times;</span>
+                </div>
+                <div id="map" class="map-container"></div>
+                <div class="map-controls">
+                    <button onclick="showDayRoute(1)" class="day-btn active" data-day="1">Día 1</button>
+                    <button onclick="showDayRoute(2)" class="day-btn" data-day="2">Día 2</button>
+                    <button onclick="showDayRoute(3)" class="day-btn" data-day="3">Día 3</button>
+                    <button onclick="showDayRoute(4)" class="day-btn" data-day="4">Día 4</button>
+                    <button onclick="showDayRoute(5)" class="day-btn" data-day="5">Día 5</button>
+                    <button onclick="showDayRoute(6)" class="day-btn" data-day="6">Día 6</button>
+                    <button onclick="showDayRoute(7)" class="day-btn" data-day="7">Día 7</button>
+                    <button onclick="showDayRoute(8)" class="day-btn" data-day="8">Día 8</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Forecast Modal -->
+        <div id="weatherModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-cloud-sun"></i> Previsión del Tiempo</h3>
+                    <span class="close" onclick="closeModal('weatherModal')">&times;</span>
+                </div>
+                <div id="weatherForecast" class="weather-forecast"></div>
+            </div>
+        </div>
+
+        <div class="day-card" onclick="toggleContent(this)" data-day="1">
             <div class="day-header">
-                <h2>Día 1: Miércoles 3 de septiembre - Llegada y Costa Este</h2>
+                <div class="day-title">
+                    <h2>Día 1: Miércoles 3 de septiembre - Llegada y Costa Este</h2>
+                    <div class="day-weather" data-day="1">
+                        <i class="fas fa-sun"></i>
+                        <span class="day-temp">--°</span>
+                    </div>
+                </div>
                 <span class="toggle-icon">▼</span>
             </div>
             <div class="day-content">
+                <div class="day-controls">
+                    <button class="control-btn" onclick="event.stopPropagation(); showDayMap(1)" title="Ver mapa del día">
+                        <i class="fas fa-map-marked-alt"></i> Mapa
+                    </button>
+                    <button class="control-btn" onclick="event.stopPropagation(); shareDay(1)" title="Compartir día">
+                        <i class="fas fa-share-alt"></i> Compartir
+                    </button>
+                    <button class="control-btn" onclick="event.stopPropagation(); addNotes(1)" title="Añadir notas">
+                        <i class="fas fa-sticky-note"></i> Notas
+                    </button>
+                </div>
+                
+                <div class="day-summary">
+                    <div class="summary-item">
+                        <i class="fas fa-route"></i>
+                        <span>Distancia total: ~25 km</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Tiempo estimado: 9h</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-euro-sign"></i>
+                        <span>Presupuesto: 60-80€</span>
+                    </div>
+                </div>
                 <div class="activity">
                     <p><strong>9:00 - 10:00 h:</strong> Llegada, recogida del coche y trayecto al Hotel Occidental Menorca (18 min). Dejar equipaje.</p>
                 </div>
@@ -30,10 +128,10 @@
                     <p><strong>13:00 - 15:00 h:</strong> Almuerzo en Punta Prima. Recomendación: Chiringuito Restaurante Aire.</p>
                 </div>
                 <div class="activity">
-                    <p><strong>15:00 - 17:00 h:</strong> Paseo por el pintoresco pueblo de <strong>Binibèquer Vell</strong> (10 min en coche).</p>
+                    <p><strong>15:00 - 17:00 h:</strong> 🏨 <strong>Vuelta al hotel para siesta</strong> (cansancio del viaje). Tiempo para relajarse.</p>
                 </div>
                 <div class="activity">
-                    <p><strong>17:00 - 18:00 h:</strong> Regreso al hotel y descanso.</p>
+                    <p><strong>17:00 - 18:30 h:</strong> Paseo tranquilo por el pintoresco pueblo de <strong>Binibèquer Vell</strong> (10 min en coche).</p>
                 </div>
                 <div class="info-box">
                     <strong>Alternativa:</strong> En caso de viento del sur, visita la playa de <strong>Es Grau</strong>.
@@ -257,6 +355,24 @@
         </div>
     </div>
 
+    <!-- Notes Modal -->
+    <div id="notesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-sticky-note"></i> Notas del Viaje</h3>
+                <span class="close" onclick="closeModal('notesModal')">&times;</span>
+            </div>
+            <div class="notes-content">
+                <textarea id="dayNotes" placeholder="Añade tus notas para este día..."></textarea>
+                <button onclick="saveNotes()" class="save-btn">
+                    <i class="fas fa-save"></i> Guardar Notas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
